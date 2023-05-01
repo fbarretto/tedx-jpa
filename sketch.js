@@ -8,20 +8,20 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 let player;
 
 let playlist = [
-  "M8td2qd49Wk", //live
+  "FGc8x9uP67A", //live
   "D5X1vz7-lnI", //recorded video
   "V9T9i8Pi0P8", //live
-  "D5X1vz7-lnI", //recorded video
+  "dS1S7LMeEFU", //recorded video
 ]
 
 let timeout = 10; //in seconds
+let timer;
 
 let playhead = 0;
 let duration;
-let volume = 0;
+let volume = 90;
 
-let timer = 10;
-let divisions = 10;
+
 
 let w = 640;
 let h = 360;
@@ -30,7 +30,7 @@ function setup() {
   let cnv = createCanvas(w, h);
   cnv.id("animation");
   cnv.parent("video-foreground");
-  divisions = width/timer;
+  timer = timeout;
 }
 
 function draw() {
@@ -40,12 +40,11 @@ function draw() {
   textAlign(CENTER, CENTER);
   textSize(20);
   fill(255);
-  rect(0,0,divisions*timer,10);
-  text(timer, width/2, height/2);
-  if (frameCount % 60 == 0 && timer > 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
-    timer --;
-  }
-  
+  rect(0,0,timer/timeout*width,10);
+  text(int(timer), width/2, height/2);
+  if ( timer > 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
+    timer -= 1/60;
+  } 
 }
 
 function onYouTubeIframeAPIReady() {
@@ -55,10 +54,11 @@ function onYouTubeIframeAPIReady() {
     videoId: playlist[0],
     playerVars: {
       'version': 3,
-      'controls': 1,
+      'controls': false,
       // 'start': 0,
       // 'end': 10,
-      'modestbranding': 1
+      'modestbranding': 1,
+      'autoplay': 1
     },
     events: {
       'onReady': onPlayerReady
@@ -67,8 +67,10 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerReady(e) {
+  e.target.mute();
   e.target.playVideo();
-  e.target.setVolume(volume);
+  // e.target.unMute();
+  // e.target.setVolume(volume);
   duration = e.target.getDuration();
   setTimeout(updateDisplay.bind(this, e), 1000);
   setTimeout(loopVideo, timeout * 1000);
@@ -96,5 +98,14 @@ function loopVideo() {
   let nextVideoId = playlist[playhead % playlist.length];
   player.loadVideoById(nextVideoId);
   console.log(nextVideoId);
-  timer = 10;
+  timer = timeout;
 }
+
+function touchStarted() {
+  console.log("Touch");
+  fill(255,0,0);
+  player.unMute();
+  player.setVolume(volume);
+}
+
+
