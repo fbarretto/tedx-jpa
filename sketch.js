@@ -32,7 +32,7 @@ function setup() {
   h = displayHeight
   if (debug)
     console.log(w + "x" + h);
-  let cnv = createCanvas(w, h);
+  let cnv = createCanvas(h, w);
   cnv.id("animation");
   cnv.parent("video-foreground");
   timer = timeout;
