@@ -1,13 +1,13 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #111111;
+  background: #000;
 }
 
 .video-foreground{
   /* display: none; */
-  width:640px;
-  height:390px;
+  width:100vw;
+  height:100vh;
   overflow:hidden;
   position:relative;
   margin: auto;
@@ -27,15 +27,17 @@ html, body {
 
 .video-foreground iframe{
   position: absolute;
-  top: -60px;
-  left: 0;
+  top: -120px;
+  left: 0px;
   width: 100%;
-  height: calc(100% + 120px);
+  height: calc(100% + 240px);
 }
 
 #animation {
   top: 0;
   left: 0;
+  width:100vw;
+  height:100vh;
   position: absolute;
   mix-blend-mode: lighten;
 }
