@@ -25,10 +25,13 @@ let h = 800;
 
 let framerate = 30;
 
+let debug = true;
+
 function setup() {
   w = displayWidth
   h = displayHeight
-  console.log(w + "x" + h);
+  if (debug)
+    console.log(w + "x" + h);
   let cnv = createCanvas(w, h);
   cnv.id("animation");
   cnv.parent("video-foreground");
@@ -43,22 +46,27 @@ function draw() {
   // console.log(player.getCurrentTime());
   textAlign(CENTER, CENTER);
   textSize(20);
-  fill(255,150);
-  rect(0,10,(1-timer/timeout)*width,10);
-  rect(0,height-10,(1-timer/timeout)*width,10);
+  fill(255, 150);
+  rect(0, 10, (1 - timer / timeout) * width, 10);
+  rect(0, height - 10, (1 - timer / timeout) * width, 10);
   // text(int(timer), width/2, height/2);
-  if ( timer > 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
-    timer -= 1.0/framerate;
-  } 
-  ellipse(width/2, height/2,50,50);
-  text(width + "x" + height,width/2,height/2);
-  fill(255,120);
-  rect(0,0,width,height);
+  if (timer > 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
+    timer -= 1.0 / framerate;
+  }
+  if (debug) {
+    ellipse(width / 2, height / 2, 50, 50);
+    text(width + "x" + height, width / 2, height / 2);
+    fill(255, 120);
+    rect(0, 0, width, height);
+  }
 }
 
 function onYouTubeIframeAPIReady() {
-  console.log("ready");
-  console.log(w + "x" + h);
+  if (debug) {
+    console.log("ready");
+    console.log(w + "x" + h);
+  }
+
   player = new YT.Player('player', {
     height: h,
     width: w,
@@ -70,7 +78,7 @@ function onYouTubeIframeAPIReady() {
       'enablejsapi': 1,
       'fs': 0,
       'modestbranding': 1,
-      'autoplay': 1, 
+      'autoplay': 1,
       'origin': 'https://late.art.br',
       'rel': 0
     },
@@ -113,10 +121,6 @@ function loopVideo() {
   player.loadVideoById(nextVideoId);
   console.log(nextVideoId);
   timer = timeout;
-}
-
-function touchStarted() {
-  console.log("Touch");
 }
 
 function windowResized() {
