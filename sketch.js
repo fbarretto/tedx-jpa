@@ -8,11 +8,25 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 let player;
 
 let playlist = [
-  "-7dRt4cQkcE", //live
+  "pIsT4AjhAa4", //live
   "D5X1vz7-lnI", //recorded video
   "3CjiPZBXW8A", //live
   "IIqtuupvdWg", //recorded video
-]
+];
+
+let playlistA = [
+  "pIsT4AjhAa4", //live
+  "D5X1vz7-lnI", //recorded video
+  "3CjiPZBXW8A", //live
+  "IIqtuupvdWg", //recorded video
+];
+
+let playlistB = [
+  "pIsT4AjhAa4", //live
+  "D5X1vz7-lnI", //recorded video
+  "3CjiPZBXW8A", //live
+  "IIqtuupvdWg", //recorded video
+];
 
 let timeout = 15; //in seconds
 let timer;
@@ -20,19 +34,30 @@ let playhead = 0;
 let duration;
 let volume = 0;
 
-let w = 1380;
-let h = 800;
+let w = 980;
+let h = 585;
 
 let framerate = 30;
 
-let debug = true;
+let debug = false;
+let tablet = 1;
 
 function setup() {
-  w = displayWidth
-  h = displayHeight
+  //  w = displayWidth
+  // h = displayHeight
+  let params = getURLParams();
+  if (params.tablet) {
+    tablet = params.tablet;
+  }
+  
+  playlist = playlistA;
+  if (tablet == 2) {
+    playlist = playlistB;
+  }
+
   if (debug)
     console.log(w + "x" + h);
-  let cnv = createCanvas(h, w);
+  let cnv = createCanvas(w, h);
   cnv.id("animation");
   cnv.parent("video-foreground");
   timer = timeout;
@@ -46,16 +71,23 @@ function draw() {
   // console.log(player.getCurrentTime());
   textAlign(CENTER, CENTER);
   textSize(20);
-  fill(255, 150);
-  rect(0, 10, (1 - timer / timeout) * width, 10);
+  fill(255, 0,0, 150);
+  // rect(0, 10, (1 - timer / timeout) * width, 10);
   rect(0, height - 10, (1 - timer / timeout) * width, 10);
   // text(int(timer), width/2, height/2);
   if (timer > 0) { // if the frameCount is divisible by 60, then a second has passed. it will stop at 0
     timer -= 1.0 / framerate;
   }
   if (debug) {
-    ellipse(width / 2, height / 2, 50, 50);
+
     text(width + "x" + height, width / 2, height / 2);
+    if (tablet == 1) {
+      fill(255, 0, 0, 120);
+    } else {
+      fill(0, 255, 0, 120);
+    }
+    ellipse(width / 2, height / 2, 50, 50);
+
     fill(255, 120);
     rect(0, 0, width, height);
   }
