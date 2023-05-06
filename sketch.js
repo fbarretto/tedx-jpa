@@ -8,23 +8,23 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 let player;
 
 let playlist = [
-  "pIsT4AjhAa4", //live
+  "nvIUF4zTgmE", //live
   "D5X1vz7-lnI", //recorded video
-  "3CjiPZBXW8A", //live
+  "w1BtU5tbii0", //live
   "IIqtuupvdWg", //recorded video
 ];
 
 let playlistA = [
-  "pIsT4AjhAa4", //live
+  "nvIUF4zTgmE", //live
   "D5X1vz7-lnI", //recorded video
-  "3CjiPZBXW8A", //live
+  "w1BtU5tbii0", //live
   "IIqtuupvdWg", //recorded video
 ];
 
 let playlistB = [
-  "pIsT4AjhAa4", //live
+  "nvIUF4zTgmE", //live
   "D5X1vz7-lnI", //recorded video
-  "3CjiPZBXW8A", //live
+  "w1BtU5tbii0", //live
   "IIqtuupvdWg", //recorded video
 ];
 
@@ -47,6 +47,7 @@ function setup() {
   // h = displayHeight
   let params = getURLParams();
   if (params.tablet) {
+    console.log(params.tablet);
     tablet = params.tablet;
   }
   
@@ -63,6 +64,7 @@ function setup() {
   timer = timeout;
   frameRate(framerate);
   pixelDensity(1);
+  // setTimeout(function(){ location.reload(true); }, 300000);
 }
 
 function draw() {
@@ -71,7 +73,7 @@ function draw() {
   // console.log(player.getCurrentTime());
   textAlign(CENTER, CENTER);
   textSize(20);
-  fill(255, 0,0, 150);
+  fill(255, 0,0);
   // rect(0, 10, (1 - timer / timeout) * width, 10);
   rect(0, height - 10, (1 - timer / timeout) * width, 10);
   // text(int(timer), width/2, height/2);
