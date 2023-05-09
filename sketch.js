@@ -8,24 +8,7 @@ firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 let player;
 
 let playlist = [
-  "nvIUF4zTgmE", //live
-  "D5X1vz7-lnI", //recorded video
-  "w1BtU5tbii0", //live
-  "IIqtuupvdWg", //recorded video
-];
-
-let playlistA = [
-  "nvIUF4zTgmE", //live
-  "D5X1vz7-lnI", //recorded video
-  "w1BtU5tbii0", //live
-  "IIqtuupvdWg", //recorded video
-];
-
-let playlistB = [
-  "nvIUF4zTgmE", //live
-  "D5X1vz7-lnI", //recorded video
-  "w1BtU5tbii0", //live
-  "IIqtuupvdWg", //recorded video
+  "IIqtuupvdWg" //recorded video
 ];
 
 let timeout = 15; //in seconds
@@ -41,6 +24,36 @@ let framerate = 30;
 
 let debug = false;
 let tablet = 1;
+let live = false;
+let jsonURL = "https://late.art.br/tedxjpa/config.json"
+
+function update(json) {
+  if (debug)
+    console.log(json);
+
+  playlist = json.playlists.recorded;
+
+  if (tablet==1) {
+    liveID = json.playlists.A;  
+  } else {
+    liveID = json.playlists.B;  
+  }
+
+  debug = json.debug;
+  timeout = json.timeout;
+
+  if (debug) {
+    console.log("liveID: " + liveID);
+    console.log("Playlist: " + playlist);
+  }
+}
+
+function preload() {
+  // loadJSON();
+  fetch(jsonURL)
+  .then((response) => response.json())
+  .then((json) => update(json));
+}
 
 function setup() {
   //  w = displayWidth
@@ -49,11 +62,6 @@ function setup() {
   if (params.tablet) {
     console.log(params.tablet);
     tablet = params.tablet;
-  }
-  
-  playlist = playlistA;
-  if (tablet == 2) {
-    playlist = playlistB;
   }
 
   if (debug)
@@ -64,7 +72,14 @@ function setup() {
   timer = timeout;
   frameRate(framerate);
   pixelDensity(1);
-  // setTimeout(function(){ location.reload(true); }, 300000);
+  // seti(loadJSON, 5000);
+  // setInterval(loadJSON,5000);
+
+  setInterval(async function () {
+    fetch(jsonURL)
+      .then((response) => response.json())
+      .then((json) => update(json));
+  }, 5000);
 }
 
 function draw() {
@@ -150,11 +165,19 @@ function loopVideo() {
   // 3 – buffering
   // 5 – video cued
 
-  playhead++;
-  let nextVideoId = playlist[playhead % playlist.length];
+  let nextVideoId = liveID;
+
+  if (!live) {
+    playhead = int(random(playlist.length));
+    nextVideoId = playlist[playhead];
+  } 
+
+  // playhead++;
+  // let nextVideoId = playlist[playhead % playlist.length];
   player.loadVideoById(nextVideoId);
-  console.log(nextVideoId);
+  console.log(nextVideoId + " " + live);
   timer = timeout;
+  live = !live;
 }
 
 function windowResized() {
